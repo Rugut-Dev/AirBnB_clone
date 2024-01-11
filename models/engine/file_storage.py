@@ -45,3 +45,8 @@ class FileStorage:
                     FileStorage.__objects = new_dict
         except Exception as e:
             print(f"An error occurred: {e}")
+
+    def my_classes(self):
+        """Returns a dict of valid classes"""
+        my_classes = {"BaseModel": BaseModel}
+        return my_classes

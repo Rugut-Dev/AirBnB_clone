@@ -82,34 +82,19 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representations of all instances"""
         if arg != "":
             args = arg.split(' ')
-        class_name = args[0]
-        if class_name not in storage.my_classes():
-            print("** class doesn't exist **")
-            return
+            class_name = args[0]
+            if class_name not in storage.my_classes():
+                print("** class doesn't exist **")
+                return
+            else:
+                lst = [str(obj) for key, obj in storage.all().items() 
+                        if type(obj).__name__ == args[0]]
+                print(lst)
         else:
-            lst = [str(obj) for key, obj in storage.all().items()
-                    if type(obj).__name__ == args[0]]
+            lst = [str(obj) for key, obj in storage.all().items()]
             print(lst)
-    else:
-        lst = [str(obj) for key, obj in storage.all().items()]
-        print(lst)
 
-
-    def do_all(self, arg):
-        """Prints all string representations of all instances"""
-    if arg != "":
-        args = arg.split(' ')
-        class_name = args[0]
-        if class_name not in storage.my_classes():
-            print("** class doesn't exist **")
-            return
-        else:
-            lst = [str(obj) for key, obj in storage.all().items() 
-                    if type(obj).__name__ == args[0]]
-            print(lst)
-    else:
-        lst = [str(obj) for key, obj in storage.all().items()]
-        print(lst)
+    def do_update
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

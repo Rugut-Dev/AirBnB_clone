@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Unit test for BaseModel Class"""
 import unittest
-from unittest.mock import patch
 from datetime import datetime, timedelta
 from models.base_model import BaseModel
 import sys
@@ -82,6 +81,22 @@ class TestBaseModel(unittest.TestCase):
         expected_updated_at = base_model.updated_at.isoformat().split('.')[0]
         self.assertEqual(result_dict['created_at'], expected_created_at)
         self.assertEqual(result_dict['updated_at'], expected_updated_at)
+
+    def test_kwargs(self):
+        """ Test for __init__(kwargs) """
+        kwargs = {
+                'key1': 'value1',
+                'key2': 'value2',
+                'created_at': '2021-01-01T00:00:00.000000',
+                'updated_at': '2021-01-01T00:00:00.000000'
+                }
+        kwargs['created_at'] = datetime.strptime(kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
+        kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+        base_model = BaseModel(**kwargs)
+        self.assertEqual(base_model.key1, kwargs['key1'])
+        self.assertEqual(base_model.key2, kwargs['key2'])
+        self.assertEqual(base_model.created_at, kwargs['created_at'])
+        self.assertEqual(base_model.updated_at, kwargs['updated_at'])
 
     def tearDown(self):
         sys.stdout = sys.__stdout__

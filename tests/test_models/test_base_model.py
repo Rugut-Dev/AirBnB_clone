@@ -21,36 +21,67 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(hasattr(base_model, 'created_at'))
         self.assertTrue(hasattr(base_model, 'updated_at'))
 
-    """
-Test id's type if string
-Test if id is unique
-"""
+    
     def test_id_type(self):
+        """
+        Test id's type if string
+        Test if id is unique
+        """
         base_model = BaseModel()
         base_model2 = BaseModel()
         self.assertIsInstance(base_model.id, str)
         self.assertNotEqual(base_model.id, base_model2.id)
 
-    """Test for created_at time"""
-    def test_created_at_is_current_datetime(self):
-        with patch('models.base_model.datetime') as mock_datetime:
-            fixed_time = datetime(2024, 1, 1, 1, 1, 1)
-            mock_datetime.now.return_value = fixed_time
-            base_model = BaseModel()
-            self.assertIsInstance(base_model.created_at, datetime)
-            self.assertEqual(base_model.created_at, fixed_time)
+    def test_public_inst_attrs(self):
+        """
+        Tests if public instance attrs
+        Tests if public instance methods
+        """
+        base_model = BaseModel()
+        self.assertTrue(hasattr(base_model, 'id'))
+        self.assertTrue(hasattr(base_model, 'created_at'))
+        self.assertAlmostEqual(base_model.created_at, datetime.now(), delta=timedelta(microseconds=100))
+        self.assertTrue(hasattr(base_model, 'updated_at'))
+        self.assertAlmostEqual(base_model.updated_at, datetime.now(), delta=timedelta(microseconds=100))
+        self.assertTrue(hasattr(base_model, 'save'))
+        self.assertTrue(hasattr(base_model, 'to_dict'))
 
     def test_str_output(self):
-        with patch('models.base_model.uuid') as mock_uuid,\
-             patch('models.base_model.datetime') as mock_datetime:
-            mock_uuid.uuid4.return_value =\
-                uuid.UUID('123e4567-e89b-12d3-a456-426614174000')
-            mock_datetime.now.return_value = datetime(2023, 1, 1, 1, 1, 1)
+        """Tests for the output of _str_"""
+        base_model = BaseModel()
+        expected_output = f"[{base_model.__class__.__name__}] ({base_model.id}) {base_model.__dict__}"
+        self.assertEqual(str(base_model), expected_output)
+    
+    def test_save_method(self):
+        """Tests the functionality of save method"""
+        base_model = BaseModel()
+        d1 = base_model.updated_at
+        base_model.save()
+        d2 = base_model.updated_at
+        self.assertNotEqual(d2, d1)
+    
+    def test_to_dict_method(self):
+        """Tests the to_dict output"""
+        base_model = BaseModel()
+        base_model.created_at = datetime(2022, 1, 1, 12, 0, 0, 0)
+        base_model.updated_at = datetime(2022, 1, 2, 12, 0, 0, 0)
 
-            base_model = BaseModel()
-            expected_output = "[BaseModel] (123e4567-e89b-12d3-a456-426614174000) {'id': '123e4567-e89b-12d3-a456-426614174000', 'created_at': datetime.datetime(2023, 1, 1, 0, 0), 'updated_at': datetime.datetime(2023, 1, 1, 0, 0)}"
+        result_dict = base_model.to_dict()
 
-            self.assertEqual(str(base_model), expected_output)
+        self.assertIn('__class__', result_dict)
+        self.assertEqual(result_dict['__class__'], 'BaseModel')
+        self.assertIn('created_at', result_dict)
+        self.assertIn('updated_at', result_dict)
+        
+        for key, value in base_model.__dict__.items():
+            if key not in ['created_at', 'updated_at']:
+                self.assertIn(key, result_dict)
+                self.assertEqual(result_dict[key], value)
+
+        expected_created_at = base_model.created_at.isoformat().split('.')[0]
+        expected_updated_at = base_model.updated_at.isoformat().split('.')[0]
+        self.assertEqual(result_dict['created_at'], expected_created_at)
+        self.assertEqual(result_dict['updated_at'], expected_updated_at)
 
     def tearDown(self):
         sys.stdout = sys.__stdout__

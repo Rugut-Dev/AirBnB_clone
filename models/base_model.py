@@ -16,7 +16,10 @@ class BaseModel:
             for key, val in kwargs.items():
                if key in ['created_at', 'updated_at']:
                   if isinstance(val, str):
-                      val = datetime.strptime(val, '%Y-%m-%dT%H:%M:%S.%f')
+                      try:
+                          val = datetime.strptime(val, '%Y-%m-%dT%H:%M:%S.%f')
+                      except ValueError:
+                          val = datetime.strptime(val, '%Y-%m-%dT%H:%M:%S')
                setattr(self, key, val)
         else:
             self.id = str(uuid.uuid4())
@@ -38,6 +41,7 @@ class BaseModel:
 
     def to_dict(self):
         """return a dict object"""
+        
         dict_obj = self.__dict__.copy()
         dict_obj['__class__'] = self.__class__.__name__
         dict_obj['created_at'] = self.created_at.isoformat()

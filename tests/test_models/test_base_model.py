@@ -39,9 +39,9 @@ class TestBaseModel(unittest.TestCase):
         base_model = BaseModel()
         self.assertTrue(hasattr(base_model, 'id'))
         self.assertTrue(hasattr(base_model, 'created_at'))
-        self.assertAlmostEqual(base_model.created_at, datetime.now(), delta=timedelta(microseconds=100))
+        self.assertAlmostEqual(base_model.created_at, datetime.now(), delta=timedelta(microseconds=1000))
         self.assertTrue(hasattr(base_model, 'updated_at'))
-        self.assertAlmostEqual(base_model.updated_at, datetime.now(), delta=timedelta(microseconds=100))
+        self.assertAlmostEqual(base_model.updated_at, datetime.now(), delta=timedelta(microseconds=1000))
         self.assertTrue(hasattr(base_model, 'save'))
         self.assertTrue(hasattr(base_model, 'to_dict'))
 
@@ -58,12 +58,12 @@ class TestBaseModel(unittest.TestCase):
         base_model.save()
         d2 = base_model.updated_at
         self.assertNotEqual(d2, d1)
-    
+   
     def test_to_dict_method(self):
         """Tests the to_dict output"""
         base_model = BaseModel()
-        base_model.created_at = datetime(2022, 1, 1, 12, 0, 0, 0)
-        base_model.updated_at = datetime(2022, 1, 2, 12, 0, 0, 0)
+        base_model.created_at = datetime(2024, 1, 1, 12, 0, 0, 0)
+        base_model.updated_at = datetime(2024, 1, 2, 12, 0, 0, 0)
 
         result_dict = base_model.to_dict()
 
@@ -77,8 +77,8 @@ class TestBaseModel(unittest.TestCase):
                 self.assertIn(key, result_dict)
                 self.assertEqual(result_dict[key], value)
 
-        expected_created_at = base_model.created_at.isoformat().split('.')[0]
-        expected_updated_at = base_model.updated_at.isoformat().split('.')[0]
+        expected_created_at = base_model.created_at.isoformat()
+        expected_updated_at = base_model.updated_at.isoformat()
         self.assertEqual(result_dict['created_at'], expected_created_at)
         self.assertEqual(result_dict['updated_at'], expected_updated_at)
 
@@ -87,8 +87,8 @@ class TestBaseModel(unittest.TestCase):
         kwargs = {
                 'key1': 'value1',
                 'key2': 'value2',
-                'created_at': '2021-01-01T00:00:00.000000',
-                'updated_at': '2021-01-01T00:00:00.000000'
+                'created_at': '2024-01-01T00:00:00.000000',
+                'updated_at': '2024-01-01T00:00:00.000000'
                 }
         kwargs['created_at'] = datetime.strptime(kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
         kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')

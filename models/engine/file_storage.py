@@ -41,8 +41,13 @@ class FileStorage:
                 pass
             else:
                 with open(FileStorage.__file_path, "r") as f:
-                    new_dict = json.load(f)
-                    FileStorage.__objects = new_dict
+                    loaded_dict = json.load(f)
+                    for key, value in loaded_dict.items():
+                        class_name, obj_id = key.split('.')
+                        cls = self.my_classes().get(class_name)
+                        if cls:
+                            obj_instance = cls(**value)
+                            FileStorage.__objects[key] = obj_instance
         except Exception as e:
             print(f"An error occurred: {e}")
 

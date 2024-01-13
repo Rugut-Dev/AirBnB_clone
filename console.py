@@ -2,6 +2,7 @@
 """Contaims the entry point of the command interpreter"""
 import cmd
 from models import storage
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -26,6 +27,10 @@ class HBNBCommand(cmd.Cmd):
             arg = '.'.join(parts[:-1])
             command = parts[-1]
             if '(' in command and ')' in command:
+                def has_content(text):
+                    return bool(re.search(r'\([^)\s]+\)', text))
+                if has_content(command):
+                    command = command.replace('(', ' ').replace(')', '')
                 command = command.replace('(', '').replace(')', '')
             else:
                 command += '()'
@@ -44,6 +49,10 @@ class HBNBCommand(cmd.Cmd):
         if cmd == '':
             return self.emptyline()
         try:
+            cmd_num = cmd.split(' ')
+            if len(cmd_num) > 1:
+                cmd = cmd_num[0]
+                arg = arg + ' ' + cmd_num[1]
             func = getattr(self, 'do_' + cmd)
         except AttributeError:
             print('*** Unknown syntax: %s' % line)

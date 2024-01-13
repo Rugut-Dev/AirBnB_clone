@@ -10,10 +10,10 @@ class TestUser(unittest.TestCase):
     def setUp(self):
         """setup"""
         pass
-    
+
     def test_inheritance(self):
         """Tests if user inherits BaseModel"""
-        self.assertTrue(issubclass(User, BaseModel))   
+        self.assertTrue(issubclass(User, BaseModel))
 
     def test_public_cls_attrs(self):
         """Tests the public class attributes"""
@@ -21,7 +21,7 @@ class TestUser(unittest.TestCase):
         self.assertTrue(hasattr(User, 'password'))
         self.assertTrue(hasattr(User, 'first_name'))
         self.assertTrue(hasattr(User, 'last_name'))
-    
+
     def test_attrs_type(self):
         """Tests the type of attr(str)"""
         self.assertIsInstance(User.email, str)
@@ -31,4 +31,3 @@ class TestUser(unittest.TestCase):
 
     def tearDown(self):
         pass
-

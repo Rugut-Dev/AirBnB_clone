@@ -6,12 +6,13 @@ from models.engine.file_storage import FileStorage
 import sys
 import os
 
+
 class TestFileStorage(unittest.TestCase):
     def setUp(self):
         self.file_path = 'file.json'
         self.storage = FileStorage()
         self.storage._FileStorage__file_path = self.file_path
-    
+
     def test_all_method9(self):
         """Tests all method"""
         self.assertIsInstance(self.storage.all(), dict)
@@ -20,9 +21,9 @@ class TestFileStorage(unittest.TestCase):
         """Tests the new method of FileStorage"""
         base_model = BaseModel()
         self.storage.new(base_model)
-        self.assertIn('BaseModel.' + base_model.id, 
+        self.assertIn('BaseModel.' + base_model.id,
                       self.storage.all())
-        
+
     def test_save_and_reload_methods(self):
         """Test the save and reload methods of FileStorage"""
         base_model = BaseModel()
@@ -36,8 +37,6 @@ class TestFileStorage(unittest.TestCase):
         new_storage.reload()
         key = '{}.{}'.format(base_model.__class__.__name__, base_model.id)
         self.assertIn(key, new_storage.all())
-
-    
 
     def tearDown(self):
         if os.path.exists(self.file_path):

@@ -20,7 +20,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(hasattr(base_model, 'created_at'))
         self.assertTrue(hasattr(base_model, 'updated_at'))
 
-    
     def test_id_type(self):
         """
         Test id's type if string
@@ -39,18 +38,21 @@ class TestBaseModel(unittest.TestCase):
         base_model = BaseModel()
         self.assertTrue(hasattr(base_model, 'id'))
         self.assertTrue(hasattr(base_model, 'created_at'))
-        self.assertAlmostEqual(base_model.created_at, datetime.now(), delta=timedelta(microseconds=1000))
+        self.assertAlmostEqual(base_model.created_at, datetime.now(), /
+                delta=timedelta(microseconds=1000))
         self.assertTrue(hasattr(base_model, 'updated_at'))
-        self.assertAlmostEqual(base_model.updated_at, datetime.now(), delta=timedelta(microseconds=1000))
+        self.assertAlmostEqual(base_model.updated_at, datetime.now(), /
+                delta=timedelta(microseconds=1000))
         self.assertTrue(hasattr(base_model, 'save'))
         self.assertTrue(hasattr(base_model, 'to_dict'))
 
     def test_str_output(self):
         """Tests for the output of _str_"""
         base_model = BaseModel()
-        expected_output = f"[{base_model.__class__.__name__}] ({base_model.id}) {base_model.__dict__}"
+        expected_output = f"[{base_model.__class__.__name__}] /
+        ({base_model.id}) {base_model.__dict__}"
         self.assertEqual(str(base_model), expected_output)
-    
+
     def test_save_method(self):
         """Tests the functionality of save method"""
         base_model = BaseModel()
@@ -58,7 +60,7 @@ class TestBaseModel(unittest.TestCase):
         base_model.save()
         d2 = base_model.updated_at
         self.assertNotEqual(d2, d1)
-   
+
     def test_to_dict_method(self):
         """Tests the to_dict output"""
         base_model = BaseModel()
@@ -71,7 +73,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(result_dict['__class__'], 'BaseModel')
         self.assertIn('created_at', result_dict)
         self.assertIn('updated_at', result_dict)
-        
+
         for key, value in base_model.__dict__.items():
             if key not in ['created_at', 'updated_at']:
                 self.assertIn(key, result_dict)
@@ -90,8 +92,10 @@ class TestBaseModel(unittest.TestCase):
                 'created_at': '2024-01-01T00:00:00.000000',
                 'updated_at': '2024-01-01T00:00:00.000000'
                 }
-        kwargs['created_at'] = datetime.strptime(kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
-        kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
+        kwargs['created_at'] = datetime.strptime(kwargs['created_at'], /
+                '%Y-%m-%dT%H:%M:%S.%f')
+        kwargs['updated_at'] = datetime.strptime(kiwargs['updated_at'], /
+                '%Y-%m-%dT%H:%M:%S.%f')
         base_model = BaseModel(**kwargs)
         self.assertEqual(base_model.key1, kwargs['key1'])
         self.assertEqual(base_model.key2, kwargs['key2'])

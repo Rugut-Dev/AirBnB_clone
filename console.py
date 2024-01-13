@@ -87,13 +87,13 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             else:
-                lst = [str(obj) for key, obj in storage.all().items() 
-                        if type(obj).__name__ == args[0]]
+                lst = [str(obj) for key, obj in storage.all().items()
+                       if type(obj).__name__ == args[0]]
                 print(lst)
         else:
             lst = [str(obj) for key, obj in storage.all().items()]
             print(lst)
-        
+
     def do_update(self, line):
         """Updates an instance based on the class name and id"""
         args = line.split(' ')
@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
     def postloop(self) -> None:
         print()
         # return super().postloop()
-        
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

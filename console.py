@@ -26,7 +26,7 @@ class HBNBCommand(cmd.Cmd):
             arg = '.'.join(parts[:-1])
             command = parts[-1]
             if '(' in command and ')' in command:
-                command = command.replace('(', '').replace(')', '')
+                command = command.replace('(', '').replace(')', '')                
             else:
                 command += '()'
         else:
@@ -53,6 +53,17 @@ class HBNBCommand(cmd.Cmd):
             return func(arg)
         else:
             return self.emptyline()
+    
+    def do_count(self, arg):
+        """Retrieves the number of instances of a class"""
+        if arg == "" or arg is None:
+            print("** class name missing **")
+        elif arg not in storage.my_classes():
+            print("** class doesn't exist **")
+        else:
+            lst = [str(obj) for key, obj in storage.all().items()
+                       if type(obj).__name__ == arg]
+            print(len(lst))
 
     def do_create(self, line):
         """Create a new instance of BaseModel, save it and print id"""

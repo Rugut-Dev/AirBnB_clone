@@ -18,6 +18,41 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Returns loop"""
         pass
+    
+    def parseline(self, line):
+        """parses commands"""
+        parts = line.split('.')
+        if len(parts) > 1:
+            arg = '.'.join(parts[:-1])
+            command = parts[-1]
+            if '(' in command and ')' in command:
+                command = command.replace('(', '').replace(')', '')
+            else:
+                command += '()'
+        else:
+            command, _, arg = line.partition(' ')
+        return command, arg
+        
+    def onecmd(self, line):
+        """Execute a single command."""
+        try:
+            cmd, arg = self.parseline(line)
+        except ValueError:
+            return self.emptyline()
+        if not line:
+            return self.emptyline()
+        if cmd == '':
+            return self.emptyline()
+        
+        try:
+            func = getattr(self, 'do_' + cmd)
+        except AttributeError:
+            print('*** Unknown syntax: %s' % line)
+            func = None
+        if func:
+            return func(arg)
+        else:
+            return self.emptyline()
 
     def do_create(self, line):
         """Create a new instance of BaseModel, save it and print id"""

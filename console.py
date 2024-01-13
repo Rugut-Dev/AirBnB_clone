@@ -8,19 +8,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_quit(self, line):
+        """Quits the program"""
         return True
 
     def do_EOF(self, line):
+        """End of File"""
         return True
 
     def emptyline(self):
-        return cmd.Cmd.emptyline(self)
-
-    def help_quit(self):
-        print("Quit command to exit the program \n\n")
-
-    def help_EOF(self):
-        print("Quit!!!")
+        """Returns loop"""
+        pass
 
     def do_create(self, line):
         """Create a new instance of BaseModel, save it and print id"""
@@ -127,9 +124,9 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, attribute_name, attribute_value)
         instance.save()
 
-    def postloop(self) -> None:
+    def postloop(self):
         print()
-        # return super().postloop()
+        print()
 
 
 if __name__ == '__main__':

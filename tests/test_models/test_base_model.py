@@ -9,12 +9,13 @@ import uuid
 
 
 class TestBaseModel(unittest.TestCase):
+    """Test cases for BaseModel classes"""
     def setUp(self):
         self.output = StringIO()
         sys.stdout = self.output
 
-    """Test cases for BaseModel classes"""
     def test_public_inst_attrs(self):
+        """Test cases for attrs"""
         base_model = BaseModel()
         self.assertTrue(hasattr(base_model, 'id'))
         self.assertTrue(hasattr(base_model, 'created_at'))
@@ -49,8 +50,10 @@ class TestBaseModel(unittest.TestCase):
     def test_str_output(self):
         """Tests for the output of _str_"""
         base_model = BaseModel()
-        expected_output = f"[{base_model.__class__.__name__}] /
-        ({base_model.id}) {base_model.__dict__}"
+        expected_output = (
+            f"[{base_model.__class__.__name__}] "
+            f"({base_model.id}) {base_model.__dict__}"
+        )
         self.assertEqual(str(base_model), expected_output)
 
     def test_save_method(self):

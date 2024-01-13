@@ -38,11 +38,11 @@ class TestBaseModel(unittest.TestCase):
         base_model = BaseModel()
         self.assertTrue(hasattr(base_model, 'id'))
         self.assertTrue(hasattr(base_model, 'created_at'))
-        self.assertAlmostEqual(base_model.created_at, datetime.now(), /
-                delta=timedelta(microseconds=1000))
+        self.assertAlmostEqual(base_model.created_at, datetime.now(),
+                               delta=timedelta(microseconds=1000))
         self.assertTrue(hasattr(base_model, 'updated_at'))
-        self.assertAlmostEqual(base_model.updated_at, datetime.now(), /
-                delta=timedelta(microseconds=1000))
+        self.assertAlmostEqual(base_model.updated_at, datetime.now(),
+                               delta=timedelta(microseconds=1000))
         self.assertTrue(hasattr(base_model, 'save'))
         self.assertTrue(hasattr(base_model, 'to_dict'))
 
@@ -92,10 +92,10 @@ class TestBaseModel(unittest.TestCase):
                 'created_at': '2024-01-01T00:00:00.000000',
                 'updated_at': '2024-01-01T00:00:00.000000'
                 }
-        kwargs['created_at'] = datetime.strptime(kwargs['created_at'], /
-                '%Y-%m-%dT%H:%M:%S.%f')
-        kwargs['updated_at'] = datetime.strptime(kiwargs['updated_at'], /
-                '%Y-%m-%dT%H:%M:%S.%f')
+        kwargs['created_at'] = datetime.strptime(
+            kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
+        kwargs['updated_at'] = datetime.strptime(
+            kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
         base_model = BaseModel(**kwargs)
         self.assertEqual(base_model.key1, kwargs['key1'])
         self.assertEqual(base_model.key2, kwargs['key2'])

@@ -18,7 +18,7 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Returns loop"""
         pass
-    
+
     def parseline(self, line):
         """parses commands"""
         parts = line.split('.')
@@ -26,13 +26,13 @@ class HBNBCommand(cmd.Cmd):
             arg = '.'.join(parts[:-1])
             command = parts[-1]
             if '(' in command and ')' in command:
-                command = command.replace('(', '').replace(')', '')                
+                command = command.replace('(', '').replace(')', '')
             else:
                 command += '()'
         else:
             command, _, arg = line.partition(' ')
         return command, arg
-        
+
     def onecmd(self, line):
         """Execute a single command."""
         try:
@@ -43,7 +43,6 @@ class HBNBCommand(cmd.Cmd):
             return self.emptyline()
         if cmd == '':
             return self.emptyline()
-        
         try:
             func = getattr(self, 'do_' + cmd)
         except AttributeError:
@@ -53,7 +52,7 @@ class HBNBCommand(cmd.Cmd):
             return func(arg)
         else:
             return self.emptyline()
-    
+
     def do_count(self, arg):
         """Retrieves the number of instances of a class"""
         if arg == "" or arg is None:
@@ -62,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             lst = [str(obj) for key, obj in storage.all().items()
-                       if type(obj).__name__ == arg]
+                   if type(obj).__name__ == arg]
             print(len(lst))
 
     def do_create(self, line):
